@@ -8,7 +8,7 @@ const path=require("path")
 const app = express();
 
 // Middleware
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: 'https://shopeasy-eccomerce.onrender.com', credentials: true }));
 app.use(cookieParser());
 app.use(express.json()); // For parsing JSON request bodies
 

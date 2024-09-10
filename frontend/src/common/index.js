@@ -1,7 +1,8 @@
 
 import SearchProduct from "../pages/searchProduct";
 
-const backendapi = "http://localhost:8080";
+ const backendapi = "https://shopeasy-eccomerce.onrender.com/"; // Use your actual backend URL
+;
 
 const SummaryApi = {
   signUp: {
