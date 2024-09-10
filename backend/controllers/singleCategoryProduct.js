@@ -1,4 +1,4 @@
-const ProductCategory = require("../../frotend/src/helper/productcatagory");
+const ProductCategory = require("../../frontend/src/helper/productcatagory");
 const ProductModel = require("../models/ProductModel");
 
 const singleCategoryProduct = async (req, res) => {

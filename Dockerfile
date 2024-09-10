@@ -11,10 +11,10 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the entire frontend folder
-COPY ./frotend /app/frotend
+COPY ./frontend /app/frontend
 
 # Build the frontend inside the container
-RUN cd /app/frotend && npm install && npm run build
+RUN cd /app/frontend && npm install && npm run build
 
 # Copy the rest of the application code
 COPY . .
