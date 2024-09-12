@@ -1,7 +1,7 @@
 
 import SearchProduct from "../pages/searchProduct";
 
- const backendapi = "https://shopeasy-eccomerce.onrender.com/"; // Use your actual backend URL
+ const backendapi = "https://shopeasy-eccomerce.onrender.com"; // Use your actual backend URL
 ;
 
 const SummaryApi = {
