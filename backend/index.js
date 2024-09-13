@@ -8,7 +8,7 @@ const path = require("path");
 const app = express();
 
 // Allowed origins for CORS
-const allowedOrigins = ['https://migibe.onrender.com'];
+const allowedOrigins = ['https://migibee.onrender.com'];
 
 app.use(cors({
   origin: function (origin, callback) {

@@ -1,7 +1,7 @@
 
 import SearchProduct from "../pages/searchProduct";
 
- const backendapi = "https://migibe.onrender.com"; // Use your actual backend URL
+ const backendapi = "https://migibee.onrender.com"; // Use your actual backend URL
 ;
 
 const SummaryApi = {
