@@ -8,9 +8,8 @@ const path = require("path");
 const app = express();
 
 // Allowed origins for CORS
-const allowedOrigins = ['https://shopeasy-b2m7.onrender.com', 'https://shopeasy-eccomerce.onrender.com'];
+const allowedOrigins = ['https://mern-eccomerce-website-10.onrender.com'];
 
-// Middleware
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -19,7 +18,7 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true // If you need to send cookies or authentication headers
+  credentials: true, // Allow credentials (cookies, headers, etc.)
 }));
 
 app.use(cookieParser());
@@ -31,12 +30,15 @@ app.use("/api", router);
 const PORT = process.env.PORT || 8080;
 
 // Serve static files in production
-const __dirname1 = path.resolve();
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname1, "/frontend/build")));
-  app.get("*", (req, res) =>
-    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"))
-  );
+  app.use(express.static(path.join(__dirname, "/frontend/build")));
+  app.get("*", (req, res, next) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"), (err) => {
+      if (err) {
+        next(err);
+      }
+    });
+  });
 } else {
   app.get("/", (req, res) => {
     res.send("API is running successfully");
