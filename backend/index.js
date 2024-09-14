@@ -9,7 +9,7 @@ const path = require('path');
 const app = express();
 
 // Middleware
-const cors = require('cors');
+
 
 const allowedOrigins = ['https://mern-eccomerce-website-1-etxt.onrender.com']; // Add allowed front-end domains
 app.use(cors({
