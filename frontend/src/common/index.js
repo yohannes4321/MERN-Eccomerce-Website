@@ -1,7 +1,7 @@
 
 import SearchProduct from "../pages/searchProduct";
 
- const backendapi = "https://migibeee.onrender.com"; // Use your actual backend URL
+ const backendapi = "https://mern-eccomerce-website-ya7m.onrender.com"; // Use your actual backend URL
 ;
 
 const SummaryApi = {
