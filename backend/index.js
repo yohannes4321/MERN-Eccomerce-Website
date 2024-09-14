@@ -7,11 +7,11 @@ const router = require('./routes/routes');
 const path = require('path');
 
 const app = express();
-
+app.use(express.json());
 // Middleware
 
 
-const allowedOrigins = ['https://mern-eccomerce-website-1-etxt.onrender.com']; // Add allowed front-end domains
+const allowedOrigins = ['https://mern-eccomerce-website-1-etxt.onrender.com/']; // Add allowed front-end domains
 app.use(cors({
   origin: allowedOrigins,
   credentials: true, // Allow cookies and other credentials
@@ -22,14 +22,11 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-  next();
-});
+  
 
 // Removed the incorrect argument 'credentials: true'
 app.use(express.json()); // For parsing JSON request bodies
-app.use(cors({ credentials: true })); // Use CORS with credentials enabled if needed
+ // Use CORS with credentials enabled if needed
 
 // Routes
 app.use('/api', router);
