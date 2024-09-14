@@ -8,26 +8,8 @@ const path = require('path');
 
 const app = express();
 
-<<<<<<< HEAD
-// Allowed origins for CORS
-const allowedOrigins = ['https://migibeee.onrender.com'];
-
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true, // Allow credentials (cookies, headers, etc.)
-}));
-
-app.use(cookieParser());
-=======
 // Middleware
 app.use(cookieParser()); // Removed the incorrect argument 'credentials: true'
->>>>>>> e14131cb04fcb6824da6be025e69d4e42ee924e6
 app.use(express.json()); // For parsing JSON request bodies
 app.use(cors({ credentials: true })); // Use CORS with credentials enabled if needed
 
