@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Context from '../context/index';
 import { GoogleLogin } from '@react-oauth/google';
-import loginIcons from '../assets/signin.gif';
+import loginIcons from '../assest/signin.gif';
 import SummaryApi from '../common/index';
 
 const clientId = "496980908522-nq15sj8ga0r4f1nkul60db19bh9l678m.apps.googleusercontent.com";
