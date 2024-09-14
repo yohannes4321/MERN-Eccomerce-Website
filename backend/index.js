@@ -7,33 +7,38 @@ const router = require('./routes/routes');
 const path = require('path');
 
 const app = express();
-app.use(express.json());
+
 // Middleware
-
-
-const allowedOrigins = ['https://mern-eccomerce-website-1-etxt.onrender.com/']; // Add allowed front-end domains
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true, // Allow cookies and other credentials
-}));
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  }
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  
-
-// Removed the incorrect argument 'credentials: true'
 app.use(express.json()); // For parsing JSON request bodies
- // Use CORS with credentials enabled if needed
+app.use(cookieParser()); // For parsing cookies
+
+// Define allowed origins (you can add more domains if needed)
+const allowedOrigins = [
+  'https://mern-eccomerce-website-1-etxt.onrender.com',
+  'https://mern-eccomerce-website-ya7m.onrender.com'
+];
+
+// CORS configuration
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (e.g., mobile apps, curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true // Enable credentials (cookies, authentication tokens, etc.)
+}));
 
 // Routes
 app.use('/api', router);
 
 const PORT = process.env.PORT || 8080;
 
-// Serve static files in production
+// Serve static files in production (optional setup based on your needs)
+// app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Connect to the database and start the server
 connectDB().then(() => {
