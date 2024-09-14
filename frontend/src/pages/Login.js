@@ -4,21 +4,38 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Context from '../context/index';
 import { GoogleLogin } from '@react-oauth/google';
-import loginIcons from '../assest/signin.gif';
+import loginIcons from '../assets/signin.gif';
 import SummaryApi from '../common/index';
+
 const clientId = "496980908522-nq15sj8ga0r4f1nkul60db19bh9l678m.apps.googleusercontent.com";
+
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [data, setData] = useState({ email: "", password: "" });
     const navigate = useNavigate();
     const { fetchUserDetails } = useContext(Context);
 
-    // Handle Google Login success and failure
-    const onSuccess = (response) => {
-        console.log("Google login success:", response);
-        toast.success("Login successful!");
-        fetchUserDetails();  // Fetch user details after Google login
-        navigate('/');       // Redirect after login
+    // Handle Google Login success
+    const onSuccess = async (response) => {
+        try {
+            const googleToken = response.credential; // OAuth token from Google
+            const res = await fetch(SummaryApi.googleSignIn.url, {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: googleToken }),
+            });
+            const result = await res.json();
+            if (result.success) {
+                toast.success("Login successful!");
+                fetchUserDetails();  // Fetch user details after Google login
+                navigate('/');       // Redirect after login
+            } else {
+                toast.error(result.message);
+            }
+        } catch (error) {
+            console.error("Google login failed:", error);
+            toast.error("Login failed!");
+        }
     };
 
     const onFailure = (error) => {
@@ -97,7 +114,6 @@ const Login = () => {
                         onSuccess={onSuccess}
                         onFailure={onFailure}
                         clientId={clientId}
-                        
                     />
                     <Link to="/forgot-password" className="text-right block text-sm text-blue-600">Forgot Password?</Link>
                     <button type="submit" className="mt-4 w-full bg-blue-600 text-white p-2 rounded-md">
