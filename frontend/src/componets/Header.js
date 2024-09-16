@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { setUserDetails } from '../store/userSlice';
 import Context from '../context/index';
 import AddToCart from '../helper/AddtoCart';
-import LocationCategory from '../helper/LocationCategory';
+import LocationCategory from '../helper/';
 
 function Header() {
   const navigate = useNavigate();
@@ -107,7 +107,7 @@ function Header() {
   }, [context]);
 
   return (
-    <header className="h-16 shadow-md bg-white">
+    <header className="h-16 shadow-md bg-white px-3">
       <div className="h-full container mx-auto flex justify-between items-center">
         {/* Logo */}
         <div className={`text-2xl font-extrabold text-gray-800 ${isSearchVisible ? 'hidden' : 'block'}`}>
