@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const ProductSchema = mongoose.Schema({
   productName: String,
   brandName: String,
@@ -8,6 +9,10 @@ const ProductSchema = mongoose.Schema({
   price: { type: Number, required: true },
   selling: { type: Number, required: true },
   farmerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Reference to Farmer
+  city: String,                  // New field for city
+  area: String,                  // New field for area
+  specialLocation: String,       // New field for special location
+  superSpecialLocation: String,  // New field for super special location
 }, { 
   timestamps: true,
   toJSON: { virtuals: true },

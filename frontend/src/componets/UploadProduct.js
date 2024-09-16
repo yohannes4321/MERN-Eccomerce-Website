@@ -16,7 +16,11 @@ const UploadProduct = ({ onClose, onUploadSuccess }) => {
     productImage: [],
     description: "",
     price: "",
-    selling: ""
+    selling: "",
+    city: "",                 // New field for city
+    area: "",                 // New field for area
+    specialLocation: "",      // New field for special location
+    superSpecialLocation: "" 
   });
 
   const [openFullScreenImage, setOpenFullScreenImage] = useState(false);
@@ -247,6 +251,73 @@ const UploadProduct = ({ onClose, onUploadSuccess }) => {
               required
             />
           </div>
+          <div className='fixed inset-0 bg-slate-200 flex justify-center items-center'>
+      <div className='bg-white p-6 rounded-lg w-full max-w-3xl h-full max-h-[90%] overflow-y-auto'>
+        <form onSubmit={handleSubmitProduct} className='space-y-6'>
+          {/* Other input fields */}
+
+          <div>
+            <label htmlFor='city' className='block text-gray-700 font-medium'>City</label>
+            <input
+              type="text"
+              id="city"
+              name="city"
+              placeholder='Enter City'
+              value={data.city}
+              onChange={handleOnChange}
+              className='border border-gray-300 p-3 rounded-md w-full'
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor='area' className='block text-gray-700 font-medium'>Area</label>
+            <input
+              type="text"
+              id="area"
+              name="area"
+              placeholder='Enter Area'
+              value={data.area}
+              onChange={handleOnChange}
+              className='border border-gray-300 p-3 rounded-md w-full'
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor='specialLocation' className='block text-gray-700 font-medium'>Special Location</label>
+            <input
+              type="text"
+              id="specialLocation"
+              name="specialLocation"
+              placeholder='Enter Special Location'
+              value={data.specialLocation}
+              onChange={handleOnChange}
+              className='border border-gray-300 p-3 rounded-md w-full'
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor='superSpecialLocation' className='block text-gray-700 font-medium'>Super Special Location</label>
+            <input
+              type="text"
+              id="superSpecialLocation"
+              name="superSpecialLocation"
+              placeholder='Enter Super Special Location'
+              value={data.superSpecialLocation}
+              onChange={handleOnChange}
+              className='border border-gray-300 p-3 rounded-md w-full'
+              required
+            />
+          </div>
+
+          <button type="submit" className="w-full px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600">
+            Upload Product
+          </button>
+        </form>
+      </div>
+    </div>
 
           <button type="submit" className="w-full px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600">
             Upload Product

@@ -1,22 +1,28 @@
-const productModel = require("../models/ProductModel");
+const ProductModel = require("../models/ProductModel");
 
 const filterProductController = async (req, res) => {
   try {
-    const categoryList = req?.body?.category || [];
+    const { category, city, area, specialLocation } = req.body;
 
-    let filterCondition = {};
-    if (categoryList.length > 0) {
-      filterCondition = {
-        category: {
-          "$in": categoryList,
-        },
-      };
+    const filterCondition = {};
+    
+    if (category) {
+      filterCondition.category = { "$in": category };
+    }
+    if (city) {
+      filterCondition.city = city;
+    }
+    if (area) {
+      filterCondition.area = area;
+    }
+    if (specialLocation) {
+      filterCondition.specialLocation = specialLocation;
     }
 
-    const product = await productModel.find(filterCondition);
+    const products = await ProductModel.find(filterCondition);
 
     res.json({
-      data: product,
+      data: products,
       message: "Products fetched successfully",
       error: false,
       success: true,
