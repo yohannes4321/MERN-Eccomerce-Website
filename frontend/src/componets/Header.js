@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { setUserDetails } from '../store/userSlice';
 import Context from '../context/index';
 import AddToCart from '../helper/AddtoCart';
-import LocationCategory from '../helper/';
+import LocationCategory from '../helper/LocationCategory';
 
 function Header() {
   const navigate = useNavigate();
