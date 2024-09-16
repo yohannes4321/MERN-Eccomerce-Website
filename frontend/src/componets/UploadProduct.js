@@ -271,7 +271,7 @@ const UploadProduct = ({ onClose, onUploadSuccess }) => {
               type="text" 
               id="area" 
               name="area"
-              placeholder='Enter Area' 
+              placeholder='Enter Area eg Arat kilo,Bole' 
               value={data.area}
               onChange={handleOnChange}
               className='border border-gray-300 p-3 rounded-md w-full'
@@ -280,30 +280,19 @@ const UploadProduct = ({ onClose, onUploadSuccess }) => {
           </div>
 
           <div>
-            <label htmlFor='specialLocation' className='block text-gray-700 font-medium'>Special Location</label>
+            <label htmlFor='specialLocation' className='block text-gray-700 font-medium'>Specific Place</label>
             <input 
               type="text" 
               id="specialLocation" 
               name="specialLocation"
-              placeholder='Enter Special Location' 
+              placeholder='Enter Specific Place eg Abrehot' 
               value={data.specialLocation}
               onChange={handleOnChange}
               className='border border-gray-300 p-3 rounded-md w-full'
             />
           </div>
 
-          <div>
-            <label htmlFor='superSpecialLocation' className='block text-gray-700 font-medium'>Super Special Location</label>
-            <input 
-              type="text" 
-              id="superSpecialLocation" 
-              name="superSpecialLocation"
-              placeholder='Enter Super Special Location' 
-              value={data.superSpecialLocation}
-              onChange={handleOnChange}
-              className='border border-gray-300 p-3 rounded-md w-full'
-            />
-          </div>
+          
 
           <button 
             type="submit"

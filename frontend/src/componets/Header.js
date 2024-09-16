@@ -107,7 +107,7 @@ function Header() {
   }, [context]);
 
   return (
-    <header className="h-16 shadow-md bg-white px-3">
+    <header className="h-16 shadow-md bg-white">
       <div className="h-full container mx-auto flex justify-between items-center">
         {/* Logo */}
         <div className={`text-2xl font-extrabold text-gray-800 ${isSearchVisible ? 'hidden' : 'block'}`}>
