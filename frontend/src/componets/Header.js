@@ -51,19 +51,11 @@ function Header() {
   };
 
   const handleAdminPanelClick = async () => {
-    try {
-      const response = await fetch(SummaryApi.current_user.url, {
-        credentials: 'include',
-      });
-      const user = await response.json();
-      if (!user.success) {
-        toast.error("🔒 You must log in first to access the Admin Panel.");
-        navigate('/login');
-      } else {
-        navigate('/admin-panel');
-      }
-    } catch (err) {
-      console.error('Error fetching user for admin panel:', err);
+    if (user) {
+      navigate('/admin');
+    } else {
+      toast.warn('You must log in first!');
+      navigate('/login');
     }
   };
 
@@ -119,7 +111,6 @@ function Header() {
         {/* Search Bar */}
         <div className={`w-full max-w-3xl mx-auto ${isSearchVisible ? 'block' : 'hidden'} md:flex md:items-center md:justify-between`}>
           <div className="flex flex-col md:flex-row md:space-x-4 p-4 bg-white rounded-lg shadow-lg border border-gray-300">
-            {/* Product Input */}
             <input
               type="text"
               name="product"
@@ -127,10 +118,8 @@ function Header() {
               value={search.product}
               onChange={handleSearch}
               className="h-8 px-3 border border-gray-300 rounded flex-grow focus:outline-none focus:ring-2 focus:ring-red-600 md:w-64"
-              required
             />
             <div className="relative flex-grow">
-              {/* Location Input Field */}
               <input
                 type="text"
                 value={search.selectedLocation}
@@ -138,16 +127,13 @@ function Header() {
                 className="h-8 px-3 border border-gray-300 rounded w-full bg-white focus:outline-none focus:ring-2 focus:ring-red-600"
                 onChange={(e) => {
                   setSearch({ ...search, selectedLocation: e.target.value });
-                  setIsDropdownVisible(true); // Show dropdown when typing
+                  setIsDropdownVisible(true);
                 }}
-                onFocus={() => setIsDropdownVisible(true)} // Show dropdown when input is clicked/focused
-                onBlur={() => setTimeout(() => setIsDropdownVisible(false), 200)} // Hide dropdown after blur with delay for selection
+                onFocus={() => setIsDropdownVisible(true)}
+                onBlur={() => setTimeout(() => setIsDropdownVisible(false), 200)}
               />
-
-              {/* Dropdown Menu */}
               {isDropdownVisible && (
                 <div className="absolute z-10 w-full mt-2 bg-white border border-gray-300 rounded shadow-lg">
-                  {/* If the user has typed, filter the locations */}
                   {LocationCategory.filter((loc) =>
                     loc.label.toLowerCase().includes(search.selectedLocation.toLowerCase())
                   ).map((loc) => (
@@ -159,33 +145,9 @@ function Header() {
                       {loc.label}
                     </button>
                   ))}
-
-                  {/* If No Match Found */}
-                  {LocationCategory.filter((loc) =>
-                    loc.label.toLowerCase().includes(search.selectedLocation.toLowerCase())
-                  ).length === 0 && (
-                    <div className="w-full text-left px-3 py-2 text-gray-500">
-                      No locations found
-                    </div>
-                  )}
-
-                  {/* If Input is Empty or Not Filtering, Show All Locations */}
-                  {!search.selectedLocation && 
-                    LocationCategory.map((loc) => (
-                      <button
-                        key={loc.id}
-                        className="w-full text-left px-3 py-2 hover:bg-gray-100"
-                        onClick={() => handleLocationSelect(loc.label)}
-                      >
-                        {loc.label}
-                      </button>
-                    ))
-                  }
                 </div>
               )}
             </div>
-
-            {/* Special Location Input - Hidden on Mobile */}
             <input
               type="text"
               name="specialLocation"
@@ -194,29 +156,11 @@ function Header() {
               onChange={handleSearch}
               className="h-8 px-3 border border-gray-300 rounded flex-grow md:block hidden focus:outline-none focus:ring-2 focus:ring-red-600"
             />
-
-            {/* Search Button */}
-            <button
-              className="h-8 w-12 bg-red-600 text-white rounded hover:bg-red-700 transition-colors duration-300 flex items-center justify-center"
-              onClick={handleSubmit}
-            >
-              <FaSearch aria-label="Search" />
-            </button>
           </div>
         </div>
 
-        {/* Search Icon for Small Screens */}
-        {!isSearchVisible && (
-          <button
-            className="md:hidden text-2xl text-gray-700 hover:text-red-600 cursor-pointer transition-colors duration-300"
-            onClick={toggleSearch}
-          >
-            <FaSearch />
-          </button>
-        )}
-
         {/* User Icon, Cart, and Login/Logout */}
-        <div className='flex justify-between items-center'>
+        <div className="flex justify-between items-center">
           <div
             className="relative mr-4"
             onMouseEnter={() => setAdminPanelVisible(true)}
@@ -230,11 +174,11 @@ function Header() {
                 onClick={handleAdminPanelClick}
               />
             ) : (
-              <Link to="/login">
-                <FaUser className="text-2xl cursor-pointer text-gray-700 hover:text-red-600 transition-colors duration-300" />
-              </Link>
+              <FaUser
+                className="text-2xl cursor-pointer text-gray-700 hover:text-red-600 transition-colors duration-300"
+                onClick={handleAdminPanelClick}
+              />
             )}
-
             {isAdminPanelVisible && user && (
               <div className="absolute top-full right-0 mt-2 bg-white border border-gray-300 rounded shadow-lg">
                 <button
@@ -243,26 +187,36 @@ function Header() {
                 >
                   Admin Panel
                 </button>
-                <button
-                  className="w-full px-4 py-2 text-left hover:bg-gray-100"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
               </div>
             )}
           </div>
-          <Link to="/cart">
-            <div className="relative text-gray-700 hover:text-red-600 transition-colors duration-300">
-              <FaShoppingCart className="text-2xl" />
-              {/* Assuming cartCount is available in context */}
-              {context.cartCount > 0 && (
-                <span className="absolute top-0 right-0 block w-4 h-4 bg-red-600 text-white text-xs rounded-full flex items-center justify-center">
-                  {context.cartCount}
-                </span>
-              )}
-            </div>
-          </Link>
+
+          {/* Shopping Cart with Badge */}
+          <div className="relative cursor-pointer" onClick={() => context.fetchUserAddToCart()}>
+            <Link to="/cart">
+              <FaShoppingCart className="text-2xl text-gray-700 hover:text-red-600 transition-colors duration-300" />
+              <div className="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                {context.cartItemCount || 0}
+              </div>
+            </Link>
+          </div>
+
+          {/* Login/Logout */}
+          {user ? (
+            <button
+              className="text-red-600 hover:text-red-800 transition-colors duration-300"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="text-red-600 hover:text-red-800 transition-colors rounded-full duration-300"
+            >
+              Login
+            </Link>
+          )}
         </div>
       </div>
     </header>

@@ -17,10 +17,10 @@ const UploadProduct = ({ onClose, onUploadSuccess }) => {
     description: "",
     price: "",
     selling: "",
-    city: "",                 // New field for city
+                   // New field for city
     area: "",                 // New field for area
     specialLocation: "",      // New field for special location
-    superSpecialLocation: "" 
+   
   });
 
   const [openFullScreenImage, setOpenFullScreenImage] = useState(false);
@@ -250,20 +250,7 @@ const UploadProduct = ({ onClose, onUploadSuccess }) => {
               required
             />
           </div>
-
-          <div>
-            <label htmlFor='city' className='block text-gray-700 font-medium'>City</label>
-            <input 
-              type="text" 
-              id="city" 
-              name="city"
-              placeholder='Enter City' 
-              value={data.city}
-              onChange={handleOnChange}
-              className='border border-gray-300 p-3 rounded-md w-full'
-              required
-            />
-          </div>
+ 
 
           <div>
             <label htmlFor='area' className='block text-gray-700 font-medium'>Area</label>
