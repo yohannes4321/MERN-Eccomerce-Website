@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import VerticalProductCard from '../components/VerticalProductCard';
+import VerticalProductCard from '../componets/verticalProductCard';
 
 const SearchProduct = () => {
   const location = useLocation();
