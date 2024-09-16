@@ -15,8 +15,12 @@ function Header() {
   const [isAdminPanelVisible, setAdminPanelVisible] = useState(false);
   const [isSearchVisible, setSearchVisible] = useState(false);
   const searchParams = new URLSearchParams(useLocation().search);
-  const [search, setSearch] = useState(searchParams.get('q') || '');
-
+  const [search, setSearch] = useState({
+    area: searchParams.get('area') || '',
+    specialLocation: searchParams.get('specialLocation') || '',
+    superSpecialLocation: searchParams.get('superSpecialLocation') || '',
+    product: searchParams.get('q') || '',
+  });
   const toggleSearch = () => {
     setSearchVisible(!isSearchVisible);
   };
@@ -64,13 +68,14 @@ function Header() {
   };
 
   const handleSearch = (e) => {
-    const { value } = e.target;
-    setSearch(value);
-    if (value) {
-      navigate(`/search?q=${value}`);
-    } else {
-      navigate(`/search`);
-    }
+    const { name, value } = e.target;
+    setSearch((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // When the user clicks search, this will trigger the navigation to the search page
+  const handleSubmit = () => {
+    const queryParams = new URLSearchParams(search).toString();
+    navigate(`/search?${queryParams}`);
   };
 
   const handleAddToCart = async (e, productId) => {
@@ -109,16 +114,52 @@ function Header() {
             isSearchVisible ? 'block' : 'hidden'
           } md:flex`}
         >
-          <input
-            type="text"
-            placeholder="Search products..."
-            className="w-full h-10 px-4 text-gray-700 border border-gray-300 rounded-l-full focus:outline-none focus:ring-2 focus:ring-red-600"
-            onChange={handleSearch}
-            value={search}
-          />
-          <button className="h-10 w-12 bg-red-600 text-white flex items-center justify-center rounded-r-full hover:bg-red-700 transition-colors duration-300">
-            <FaSearch aria-label="Search" />
-          </button>
+          {/**
+           * search 
+           */}
+               <div className="w-full max-w-lg mx-auto p-4 bg-white rounded-lg shadow-lg">
+      <div className="flex flex-col space-y-3">
+        <input
+          type="text"
+          name="area"
+          placeholder="Enter Area"
+          value={search.area}
+          onChange={handleSearch}
+          className="h-10 px-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-600"
+        />
+        <input
+          type="text"
+          name="specialLocation"
+          placeholder="Enter Special Location"
+          value={search.specialLocation}
+          onChange={handleSearch}
+          className="h-10 px-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-600"
+        />
+        <input
+          type="text"
+          name="superSpecialLocation"
+          placeholder="Enter Super Special Location"
+          value={search.superSpecialLocation}
+          onChange={handleSearch}
+          className="h-10 px-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-600"
+        />
+        <input
+          type="text"
+          name="product"
+          placeholder="Search for a product..."
+          value={search.product}
+          onChange={handleSearch}
+          className="h-10 px-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-600"
+        />
+        <button
+          className="h-10 w-full bg-red-600 text-white rounded hover:bg-red-700 transition-colors duration-300"
+          onClick={handleSubmit}
+        >
+          <FaSearch aria-label="Search" />
+        </button>
+      </div>
+    </div>
+
         </div>
 
         {/* Search Icon for Small Screens */}
