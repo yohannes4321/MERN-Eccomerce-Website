@@ -19,22 +19,23 @@ const StandardCardProduct = ({ category, heading }) => {
     window.location.href = 'http://localhost:3001/';
   };
 
-  const handleToCart = async (e, id) => {
+  const handleAddToCart = async (e, productId) => {
     e.preventDefault();
-    
     try {
-      const addToCartResponse = await AddToCart(e, id);
-  
-      if (addToCartResponse.success) {
-        toast.success(addToCartResponse.message);
-        fetchUserAddToCart(); // Refresh cart count in the header
-      } else if (addToCartResponse.error) {
-        toast.error(addToCartResponse.message);
-      }
+        console.log("Adding to cart, product ID:", productId); // Debug log
+        const addToCartResponse = await AddToCart(e, productId);
+        console.log("Add to cart response:", addToCartResponse); // Debug log
+        if (addToCartResponse.success) {
+            toast.success(addToCartResponse.message);
+            context.fetchUserAddToCart(); // Ensure context is updated correctly
+        } else {
+            toast.error(addToCartResponse.message);
+        }
     } catch (error) {
-      console.error("Error adding to cart:", error);
+        toast.error("Failed to add to cart. Please try again.");
+        console.error("Error adding to cart:", error);
     }
-  };
+};
   
   const fetchData = async () => {
     setLoading(true);
@@ -118,7 +119,7 @@ const StandardCardProduct = ({ category, heading }) => {
     {/* Add to Cart Button */}
     <button 
       className="flex-1 bg-red-600 hover:bg-red-800 text-white py-3 px-5 rounded-full text-base font-semibold transition-transform duration-300 ease-in-out transform hover:scale-105 shadow-lg" 
-      onClick={(e) => handleToCart(e, product?._id)}
+      onClick={(e) =>handleAddToCart(e, product?._id)}
     >
       Add to Cart
     </button>

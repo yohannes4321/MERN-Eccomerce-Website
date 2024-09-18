@@ -10,8 +10,7 @@ import { setUserDetails } from './store/userSlice';
 import SummaryApi from './common/index';
 import Context from './context/index';
 import './App.css';
-
-const clientId = "496980908522-nq15sj8ga0r4f1nkul60db19bh9l678m.apps.googleusercontent.com";  // Replace with your Google OAuth Client ID
+// Replace with your Google OAuth Client ID
 
 function App() {
     const dispatch = useDispatch();
@@ -41,11 +40,17 @@ function App() {
                 credentials: 'include',
             });
             const result = await response.json();
-            setCartProductCount(result?.data?.count || 0);
+            console.log("Cart count response:", result); // Debug log
+            if (result.success) {
+                setCartProductCount(result.data?.count || 0);
+            } else {
+                console.error("Error fetching cart count:", result.message);
+            }
         } catch (error) {
             console.error("Error fetching cart count:", error);
         }
     };
+    
 
     useEffect(() => {
         fetchUserDetails();

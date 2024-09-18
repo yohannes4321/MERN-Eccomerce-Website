@@ -87,20 +87,8 @@ function Header() {
     navigate(`/search?${queryParams}`);
   };
 
-  const handleAddToCart = async (e, productId) => {
-    e.preventDefault(); // Prevent default action if necessary
-    try {
-      const addToCartResponse = await AddToCart(e, productId);
-      if (addToCartResponse.success) {
-        toast.success(addToCartResponse.message);
-        context.fetchUserAddToCart(); // Update cart count dynamically
-      } else if (addToCartResponse.error) {
-        toast.error(addToCartResponse.message);
-      }
-    } catch (error) {
-      toast.error("Failed to add to cart. Please try again.");
-    }
-  };
+ 
+
 
   useEffect(() => {
     context.fetchUserDetails();
