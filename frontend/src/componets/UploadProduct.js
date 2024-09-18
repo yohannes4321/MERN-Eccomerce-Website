@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import { IoCloudUploadSharp } from "react-icons/io5";
 import { IoMdClose } from "react-icons/io";
 import { MdDeleteForever } from "react-icons/md";
-import ProductCategory from "../helper/productcatagory";
+import ProductCategory from "../helper/productcatagory.js";
 import uploadImage from "../helper/uploadImage";
-import DisplayImage from '../componets/Displayimages'; // Fixed import path typo
+import DisplayImage from '../componets/Displayimages'; // Fixed import path
 import SummaryApi from '../common/index';
 import { toast } from 'react-toastify';
-import LocationCategory from '../helper/LocationCategory';
-
+import LocationCategory from '../helper/LocationCategory.js';
 const UploadProduct = ({ onClose, onUploadSuccess }) => {
   const [data, setData] = useState({
     productName: "",
@@ -18,15 +17,15 @@ const UploadProduct = ({ onClose, onUploadSuccess }) => {
     description: "",
     price: "",
     selling: "",
-    area: "", // New field for area
-    specialLocation: "", // New field for special location
+                   // New field for city
+    area: "",                 // New field for area
+    specialLocation: "",      // New field for special location
+   
   });
-
-  const [search, setSearch] = useState({ selectedLocation: "" });
+ 
   const [openFullScreenImage, setOpenFullScreenImage] = useState(false);
   const [fullScreenImage, setFullScreenImage] = useState("");
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-
   // Handle deleting an uploaded image
   const handleDeleteProductImage = (index) => {
     const newProductImage = [...data.productImage];
@@ -40,13 +39,17 @@ const UploadProduct = ({ onClose, onUploadSuccess }) => {
   // Handle input changes
   const handleOnChange = (e) => {
     const { name, value } = e.target;
+  
     setData(prevData => {
+      // Convert specific fields to numbers
       if (name === 'price' || name === 'selling') {
         return {
           ...prevData,
           [name]: value ? parseFloat(value) : '', // Convert to number if not empty
         };
       }
+  
+      // For other fields, simply update the value as a string
       return {
         ...prevData,
         [name]: value,
@@ -68,12 +71,6 @@ const UploadProduct = ({ onClose, onUploadSuccess }) => {
     }
   };
 
-  // Handle location selection
-  const handleLocationSelect = (location) => {
-    setSearch({ selectedLocation: location });
-    setIsDropdownVisible(false); // Hide dropdown after selection
-  };
-
   // Handle product submission
   const handleSubmitProduct = async (e) => {
     e.preventDefault();
@@ -82,9 +79,9 @@ const UploadProduct = ({ onClose, onUploadSuccess }) => {
         method: SummaryApi.uploadProduct.method,
         credentials: "include",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(data)
       });
       const responseData = await response.json();
       if (responseData.success) {
@@ -253,56 +250,59 @@ const UploadProduct = ({ onClose, onUploadSuccess }) => {
               required
             />
           </div>
+          <div>
+            <label htmlFor='area' className='block text-gray-700 font-medium'>Area</label>
+            <select 
+              required
+              id="area"
+              name="area"
+              value={data.area} 
+              onChange={handleOnChange}
+              className='p-3 w-full bg-slate-200 border border-gray-300 rounded-md'
+            >
+              <option value="" disabled>Select a Area</option>
+              {ProductCategory.map((el, index) => (
+                <option value={el.value} key={el.value + index}>
+                  {el.label}
+                </option>
+              ))}
+            </select>
+          </div>
 
-          <div className="relative flex-grow">
-            <input
-              type="text"
-              value={search.selectedLocation}
-              placeholder="Enter location..."
-              className="h-8 px-3 border border-gray-300 rounded w-full bg-white focus:outline-none focus:ring-2 focus:ring-red-600"
-              onFocus={() => setIsDropdownVisible(true)}
+
+          <div>
+            <label htmlFor='specialLocation' className='block text-gray-700 font-medium'>Specific Place</label>
+            <input 
+              type="text" 
+              id="specialLocation" 
+              name="specialLocation"
+              placeholder='Enter Specific Place eg Abrehot' 
+              value={data.specialLocation}
+              onChange={handleOnChange}
+              className='border border-gray-300 p-3 rounded-md w-full'
             />
-            {isDropdownVisible && (
-              <div className="absolute z-10 bg-white border border-gray-200 rounded-md mt-1 w-full max-h-48 overflow-auto shadow-lg">
-                {LocationCategory.map((location, index) => (
-                  <div
-                    key={index}
-                    className="cursor-pointer p-2 hover:bg-gray-100"
-                    onClick={() => handleLocationSelect(location)}
-                  >
-                    {location}
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
 
-          {/* Submit Button */}
-          <div className='flex justify-end'>
-            <button type="submit" className='px-6 py-2 bg-red-600 text-white rounded-md'>Submit</button>
-          </div>
+          
+
+          <button 
+            type="submit"
+            className='bg-blue-600 text-white p-3 rounded-md w-full hover:bg-blue-700'
+          >
+            Upload Product
+          </button>
         </form>
       </div>
-
-      {/* Fullscreen Image Modal */}
       {openFullScreenImage && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50"
+        <div 
+          className='fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50'
           onClick={() => setOpenFullScreenImage(false)}
         >
-          <div className="relative">
-            <img
-              src={fullScreenImage}
-              alt="Full Screen"
-              className="max-w-screen-lg max-h-screen object-cover"
-            />
-            <button
-              className="absolute top-0 right-0 mt-2 mr-2 p-2 text-white bg-red-600 rounded-full"
-              onClick={() => setOpenFullScreenImage(false)}
-            >
-              <IoMdClose className="text-2xl" />
-            </button>
-          </div>
+          <img 
+            src={fullScreenImage} 
+            alt="Full Screen" 
+            className="max-w-full max-h-full object-contain"
+          />
         </div>
       )}
     </div>
