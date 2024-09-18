@@ -65,7 +65,7 @@ function Header() {
 
   const handleLocationSelect = (location) => {
     setSearch({ ...search, selectedLocation: location });
-    setIsDropdownVisible(false);
+    setIsDropdownVisible(false); // Hide dropdown after selection
   };
 
   const handleSearch = (e) => {
@@ -74,7 +74,16 @@ function Header() {
   };
 
   const handleSubmit = () => {
-    const queryParams = new URLSearchParams(search).toString();
+    const filteredSearchParams = {};
+    
+    // Only include params that have values
+    Object.keys(search).forEach((key) => {
+      if (search[key]) {
+        filteredSearchParams[key] = search[key];
+      }
+    });
+  
+    const queryParams = new URLSearchParams(filteredSearchParams).toString();
     navigate(`/search?${queryParams}`);
   };
 
@@ -127,10 +136,10 @@ function Header() {
                 className="h-8 px-3 border border-gray-300 rounded w-full bg-white focus:outline-none focus:ring-2 focus:ring-red-600"
                 onChange={(e) => {
                   setSearch({ ...search, selectedLocation: e.target.value });
-                  setIsDropdownVisible(true);
+                  setIsDropdownVisible(true); // Show dropdown when user starts typing
                 }}
                 onFocus={() => setIsDropdownVisible(true)}
-                onBlur={() => setTimeout(() => setIsDropdownVisible(false), 200)}
+                // Removed onBlur to prevent it from hiding the dropdown prematurely
               />
               {isDropdownVisible && (
                 <div className="absolute z-10 w-full mt-2 bg-white border border-gray-300 rounded shadow-lg">
@@ -156,6 +165,12 @@ function Header() {
               onChange={handleSearch}
               className="h-8 px-3 border border-gray-300 rounded flex-grow md:block hidden focus:outline-none focus:ring-2 focus:ring-red-600"
             />
+            <button
+              onClick={handleSubmit}
+              className="h-8 px-3 bg-red-600 text-white rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600"
+            >
+              Search
+            </button>
           </div>
         </div>
 
