@@ -27,7 +27,7 @@ const StandardCardProduct = ({ category, heading }) => {
         console.log("Add to cart response:", addToCartResponse); // Debug log
         if (addToCartResponse.success) {
             toast.success(addToCartResponse.message);
-            context.fetchUserAddToCart(); // Ensure context is updated correctly
+            Context.fetchUserAddToCart(); // Ensure context is updated correctly
         } else {
             toast.error(addToCartResponse.message);
         }

@@ -3,7 +3,9 @@ import  { useNavigate, useParams } from 'react-router-dom'
 import SummaryApi from '../common/index'
 import { FaStar } from "react-icons/fa";
 import { FaStarHalf } from "react-icons/fa";
-
+import AddToCart from '../helper/AddtoCart';
+import {toast} from "react-toastify"
+import context from '../context';
 import scrollTop from '../helper/scroll';
 import CategroyWiseProductDisplay from '../componets/CategoryList';
 import StandardCardProduct from "../componets/StandardCardProduct"

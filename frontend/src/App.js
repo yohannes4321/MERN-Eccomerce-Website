@@ -60,7 +60,7 @@ function App() {
     }, []);
 
     return (
-        <GoogleOAuthProvider clientId={clientId}>
+       
             <Context.Provider value={{ fetchUserDetails, fetchUserAddToCart, cartProductCount }}>
                 <ToastContainer />
                 <Header />
@@ -69,7 +69,7 @@ function App() {
                 </main>
                 <Footer />
             </Context.Provider>
-        </GoogleOAuthProvider>
+      
     );
 }
 
