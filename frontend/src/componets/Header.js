@@ -87,7 +87,23 @@ function Header() {
     navigate(`/search?${queryParams}`);
   };
 
- 
+  const handleAddToCart = async (e, productId) => {
+    e.preventDefault();
+    try {
+        console.log("Adding to cart, product ID:", productId); // Debug log
+        const addToCartResponse = await AddToCart(e, productId);
+        console.log("Add to cart response:", addToCartResponse); // Debug log
+        if (addToCartResponse.success) {
+            toast.success(addToCartResponse.message);
+            context.fetchUserAddToCart(); // Ensure context is updated correctly
+        } else {
+            toast.error(addToCartResponse.message);
+        }
+    } catch (error) {
+        toast.error("Failed to add to cart. Please try again.");
+        console.error("Error adding to cart:", error);
+    }
+};
 
 
   useEffect(() => {

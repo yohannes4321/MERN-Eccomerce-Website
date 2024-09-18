@@ -15,10 +15,7 @@ const StandardCardProduct = ({ category, heading }) => {
 
   const { fetchUserDetails, fetchUserAddToCart } = useContext(Context);
 
-  const handleClick = () => {
-    window.location.href = 'http://localhost:3001/';
-  };
-
+  
   const handleAddToCart = async (e, productId) => {
     e.preventDefault();
     try {
