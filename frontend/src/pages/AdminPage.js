@@ -34,22 +34,13 @@ const AdminPage = () => {
         {/* Sidebar Navigation */}
         <nav className="mt-8">
           <ul className="text-gray-700">
-            <Link to="all_users">  {/* Updated to "all_users" */}
-              <li className="px-6 py-2 hover:bg-gray-200 cursor-pointer transition-colors duration-300">
-                All Users
-              </li>
-            </Link>
+             
+            
             <Link to="products">
               <li className="px-6 py-2 hover:bg-gray-200 cursor-pointer transition-colors duration-300">
                 Manage Products
               </li>
-            </Link>
-            <li className="px-6 py-2 hover:bg-gray-200 cursor-pointer transition-colors duration-300">
-              Settings
-            </li>
-            <li className="px-6 py-2 hover:bg-gray-200 cursor-pointer transition-colors duration-300">
-              Logout
-            </li>
+         </Link>
           </ul>
         </nav>
       </aside>

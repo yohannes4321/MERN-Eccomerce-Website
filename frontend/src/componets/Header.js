@@ -179,64 +179,65 @@ function Header() {
         </div>
 
         {/* User Icon, Cart, and Login/Logout */}
-        <div className="flex justify-between items-center">
-          <div
-            className="relative mr-4"
-            onMouseEnter={() => setAdminPanelVisible(true)}
-            onMouseLeave={() => setAdminPanelVisible(false)}
-          >
-            {user?.profilePic ? (
-              <img
-                src={user.profilePic}
-                className="w-12 h-12 rounded-full cursor-pointer"
-                alt={user?.name || 'User Profile'}
-                onClick={handleAdminPanelClick}
-              />
-            ) : (
-              <FaUser
-                className="text-2xl cursor-pointer text-gray-700 hover:text-red-600 transition-colors duration-300"
-                onClick={handleAdminPanelClick}
-              />
-            )}
-            {isAdminPanelVisible && user && (
-              <div className="absolute top-full right-0 mt-2 bg-white border border-gray-300 rounded shadow-lg">
-                <button
-                  className="w-full px-4 py-2 text-left hover:bg-gray-100"
-                  onClick={handleAdminPanelClick}
-                >
-                  Admin Panel
-                </button>
-              </div>
-            )}
-          </div>
+       {/* User Icon, Cart, and Login/Logout */}
+<div className="flex items-center gap-6">
+  <div
+    className="relative"
+    onMouseEnter={() => setAdminPanelVisible(true)}
+    onMouseLeave={() => setAdminPanelVisible(false)}
+  >
+    {user?.profilePic ? (
+      <img
+        src={user.profilePic}
+        className="w-12 h-12 rounded-full cursor-pointer"
+        alt={user?.name || 'User Profile'}
+        onClick={handleAdminPanelClick}
+      />
+    ) : (
+      <FaUser
+        className="text-2xl cursor-pointer text-gray-700 hover:text-red-600 transition-colors duration-300"
+        onClick={handleAdminPanelClick}
+      />
+    )}
+    {isAdminPanelVisible && user && (
+      <div className="absolute top-full right-0 mt-2 bg-white border border-gray-300 rounded shadow-lg">
+        <button
+          className="w-full px-4 py-2 text-left hover:bg-gray-100"
+          onClick={handleAdminPanelClick}
+        >
+          Admin Panel
+        </button>
+      </div>
+    )}
+  </div>
 
-          {/* Shopping Cart with Badge */}
-          <div className="relative cursor-pointer" onClick={() => context.fetchUserAddToCart()}>
-            <Link to="/cart">
-              <FaShoppingCart className="text-2xl text-gray-700 hover:text-red-600 transition-colors duration-300" />
-              <div className="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                {context.cartItemCount || 0}
-              </div>
-            </Link>
-          </div>
+  {/* Shopping Cart with Badge */}
+  <div className="relative cursor-pointer" onClick={() => context.fetchUserAddToCart()}>
+    <Link to="/cart">
+      <FaShoppingCart className="text-2xl text-gray-700 hover:text-red-600 transition-colors duration-300" />
+      <div className="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
+        {context.cartProductCount}
+      </div>
+    </Link>
+  </div>
 
-          {/* Login/Logout */}
-          {user ? (
-            <button
-              className="text-red-600 hover:text-red-800 transition-colors duration-300"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
-          ) : (
-            <Link
-              to="/login"
-              className="text-red-600 hover:text-red-800 transition-colors rounded-full duration-300"
-            >
-              Login
-            </Link>
-          )}
-        </div>
+  {/* Login/Logout */}
+  {user ? (
+    <button
+      className="px-3 py-1 rounded-full text-white bg-red-600 hover:bg-red-700"
+      onClick={handleLogout}
+    >
+      Logout
+    </button>
+  ) : (
+    <Link
+      to="/login"
+      className="px-3 py-1 rounded-full text-white bg-red-600 hover:bg-red-700"
+    >
+      Login
+    </Link>
+  )}
+</div>
       </div>
     </header>
   );

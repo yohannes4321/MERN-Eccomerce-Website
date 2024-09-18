@@ -261,7 +261,7 @@ const UploadProduct = ({ onClose, onUploadSuccess }) => {
               className='p-3 w-full bg-slate-200 border border-gray-300 rounded-md'
             >
               <option value="" disabled>Select a Area</option>
-              {ProductCategory.map((el, index) => (
+              {LocationCategory.map((el, index) => (
                 <option value={el.value} key={el.value + index}>
                   {el.label}
                 </option>

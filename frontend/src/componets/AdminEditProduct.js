@@ -9,7 +9,7 @@ import uploadImage from '../helper/uploadImage';
 import DisplayImage from '../componets/Displayimages';
 import SummaryApi from '../common/index';
 import { toast } from 'react-toastify';
-
+import LocationCategory from '../helper/LocationCategory.js';
 const AdminEditProduct = ({ onClose, onUploadSuccess, fetchAllProducts, datacollected }) => {
   const [data, setData] = useState({
     ...datacollected ,
@@ -19,7 +19,9 @@ const AdminEditProduct = ({ onClose, onUploadSuccess, fetchAllProducts, datacoll
     productImage: datacollected?.productImage || [],
     description: datacollected?.description || '',
     price: datacollected?.price || '',
-    selling: datacollected?.selling || ''
+    selling: datacollected?.selling || '',
+    area: "",                 // New field for area
+    specialLocation: "", 
   });
 
   const [openFullScreenImage, setOpenFullScreenImage] = useState(false);
@@ -237,6 +239,40 @@ const AdminEditProduct = ({ onClose, onUploadSuccess, fetchAllProducts, datacoll
               
             />
           </div>
+          <div>
+            <label htmlFor='area' className='block text-gray-700 font-medium'>Area</label>
+            <select 
+              required
+              id="area"
+              name="area"
+              value={data.area} 
+              onChange={handleOnChange}
+              className='p-3 w-full bg-slate-200 border border-gray-300 rounded-md'
+            >
+              <option value="" disabled>Select a Area</option>
+              {LocationCategory.map((el, index) => (
+                <option value={el.value} key={el.value + index}>
+                  {el.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+
+          <div>
+            <label htmlFor='specialLocation' className='block text-gray-700 font-medium'>Specific Place</label>
+            <input 
+              type="text" 
+              id="specialLocation" 
+              name="specialLocation"
+              placeholder='Enter Specific Place eg Abrehot' 
+              value={data.specialLocation}
+              onChange={handleOnChange}
+              className='border border-gray-300 p-3 rounded-md w-full'
+            />
+          </div>
+
+          
 
           <button type="submit" className="w-full px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600">
             Save Changes

@@ -34,21 +34,16 @@ function App() {
 
     // Fetch cart count
     const fetchUserAddToCart = async () => {
-        try {
+    
             const response = await fetch(SummaryApi.Count_Add_TO_CART.url, {
                 method: SummaryApi.Count_Add_TO_CART.method,
                 credentials: 'include',
             });
             const result = await response.json();
             console.log("Cart count response:", result); // Debug log
-            if (result.success) {
-                setCartProductCount(result.data?.count || 0);
-            } else {
-                console.error("Error fetching cart count:", result.message);
-            }
-        } catch (error) {
-            console.error("Error fetching cart count:", error);
-        }
+        
+                setCartProductCount(result.data?.count );
+            
     };
     
 
@@ -61,7 +56,7 @@ function App() {
 
     return (
        
-            <Context.Provider value={{ fetchUserDetails, fetchUserAddToCart, cartProductCount }}>
+            <Context.Provider value={{ fetchUserDetails, fetchUserAddToCart, cartProductCount}}>
                 <ToastContainer />
                 <Header />
                 <main className="min-h-[calc(100vh-200px)]">
