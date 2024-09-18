@@ -52,7 +52,7 @@ function Header() {
 
   const handleAdminPanelClick = async () => {
     if (user) {
-      navigate('/admin');
+      navigate('/products');
     } else {
       toast.warn('You must log in first!');
       navigate('/login');
