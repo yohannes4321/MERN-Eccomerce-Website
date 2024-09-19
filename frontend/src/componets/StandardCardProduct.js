@@ -126,7 +126,7 @@ const StandardCardProduct = ({ category, heading }) => {
       className="flex-1 bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:from-green-700 hover:via-green-800 hover:to-green-900 text-white py-3 px-5 rounded-full text-base font-bold transition-transform duration-300 ease-in-out transform hover:scale-105 shadow-lg"
      
     >
-      Chat Farmer & Product Details
+      Chat Farmer
     </button>
   </div>
 </div>

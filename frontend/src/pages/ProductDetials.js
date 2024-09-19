@@ -37,7 +37,7 @@ const ProductDetails = () => {
 
   const navigate = useNavigate()
   const handleClick = () => {
-    window.location.href = 'http://localhost:3001/';
+    window.location.href = 'https://chatapp-frontend-66ok.onrender.com';
   };
 
   const fetchProductDetails = async()=>{
