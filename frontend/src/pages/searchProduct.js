@@ -12,7 +12,7 @@ const SearchProduct = () => {
 
   const fetchProduct = async()=>{
       setLoading(true)
-      const response = await fetch(SummaryApi.searchProduct.url+query.search)
+      const response = await fetch(SummaryApi.SearchProduct_Result.url+query.search)
       const dataResponse = await response.json()
       setLoading(false)
 
