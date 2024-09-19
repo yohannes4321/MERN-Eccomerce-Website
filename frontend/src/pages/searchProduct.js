@@ -4,50 +4,50 @@ import SummaryApi from '../common/index'
 import VerticalCard from '../componets/verticalProductCard'
 
 const SearchProduct = () => {
-    const query = useLocation()
-    const [data,setData] = useState([])
-    const [loading,setLoading] = useState(false)
+  const query = useLocation()
+  const [data,setData] = useState([])
+  const [loading,setLoading] = useState(false)
 
-    console.log("query",query.search)
+  console.log("query",query.search)
 
-    const fetchProduct = async()=>{
-        setLoading(true)
-        const response = await fetch(SummaryApi.searchProduct.url+query.search)
-        const dataResponse = await response.json()
-        setLoading(false)
+  const fetchProduct = async()=>{
+      setLoading(true)
+      const response = await fetch(SummaryApi.searchProduct.url+query.search)
+      const dataResponse = await response.json()
+      setLoading(false)
 
-        setData(dataResponse.data)
+      setData(dataResponse.data)
+  }
+
+  useEffect(()=>{
+      fetchProduct()
+  },[query])
+
+return (
+  <div className='container mx-auto p-4'>
+    {
+      loading && (
+        <p className='text-lg text-center'>Loading ...</p>
+      )
     }
 
-    useEffect(()=>{
-        fetchProduct()
-    },[query])
+    <p className='text-lg font-semibold my-3'>Search Results : {data.length}</p>
 
-  return (
-    <div className='container mx-auto p-4'>
-      {
-        loading && (
-          <p className='text-lg text-center'>Loading ...</p>
-        )
-      }
- 
-      <p className='text-lg font-semibold my-3'>Search Results : {data.length}</p>
-
-      {
-        data.length === 0 && !loading && (
-           <p className='bg-white text-lg text-center p-4'>No Data Found....</p>
-        )
-      }
+    {
+      data.length === 0 && !loading && (
+         <p className='bg-white text-lg text-center p-4'>No Data Found....</p>
+      )
+    }
 
 
-      {
-        data.length !==0 && !loading && (
-          <VerticalCard loading={ loading} data={data}/>
-        )
-      }
+    {
+      data.length !==0 && !loading && (
+        <VerticalCard loading={ loading} data={data}/>
+      )
+    }
 
-    </div>
-  )
+  </div>
+)
 }
 
 export default SearchProduct

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { FaSearch, FaUser, FaShoppingCart } from 'react-icons/fa';
+import { FaSearch, FaUser,FaShoppingCart } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import SummaryApi from '../common/index';
@@ -8,7 +8,6 @@ import { setUserDetails } from '../store/userSlice';
 import Context from '../context/index';
 import AddToCart from '../helper/AddtoCart';
 import LocationCategory from '../helper/LocationCategory';
-
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -67,19 +66,15 @@ function Header() {
   const handleSearch = (e)=>{
     const { value } = e.target
     setSearch(value)
-  const handleSubmit = () => {
-    const filteredSearchParams = {};
-    
-    // Only include params that have values
-    Object.keys(search).forEach((key) => {
-      if (search[key]) {
-        filteredSearchParams[key] = search[key];
-      }
-    });
+
+    if(value){
+      navigate(`/search?q=${value}`)
+    }else{
+      navigate("/search")
+    }
+  }
   
-    const queryParams = new URLSearchParams(filteredSearchParams).toString();
-    navigate(`/search?${queryParams}`);
-  };
+  
 
   const handleAddToCart = async (e, productId) => {
     e.preventDefault();
@@ -115,55 +110,12 @@ function Header() {
           </Link>
         </div>
 
-        {/* Search Bar */}
-        <div className={`w-full max-w-3xl mx-auto ${isSearchVisible ? 'block' : 'hidden'} md:flex md:items-center md:justify-between`}>
-          <div className="flex flex-col md:flex-row md:space-x-4 p-4 bg-white rounded-lg shadow-lg border border-gray-300">
-            <input
-              type="text"
-              name="product"
-              placeholder="Search for a product..."
-              value={search.product}
-              onChange={handleSearch}
-              className="h-8 px-3 border border-gray-300 rounded flex-grow focus:outline-none focus:ring-2 focus:ring-red-600 md:w-64"
-            />
-            <div className="relative flex-grow">
-              <input
-                type="text"
-                value={search.selectedLocation}
-                placeholder="Search location..."
-                className="h-8 px-3 border border-gray-300 rounded w-full bg-white focus:outline-none focus:ring-2 focus:ring-red-600"
-                onChange={(e) => {
-                  setSearch({ ...search, selectedLocation: e.target.value });
-                  setIsDropdownVisible(true); // Show dropdown when user starts typing
-                }}
-                onFocus={() => setIsDropdownVisible(true)}
-                // Removed onBlur to prevent it from hiding the dropdown prematurely
-              />
-              {isDropdownVisible && (
-                <div className="absolute z-10 w-full mt-2 bg-white border border-gray-300 rounded shadow-lg">
-                  {LocationCategory.filter((loc) =>
-                    loc.label.toLowerCase().includes(search.selectedLocation.toLowerCase())
-                  ).map((loc) => (
-                    <button
-                      key={loc.id}
-                      className="w-full text-left px-3 py-2 hover:bg-gray-100"
-                      onClick={() => handleLocationSelect(loc.label)}
-                    >
-                      {loc.label}
-                    </button>
-                  ))}
+        <div className='hidden lg:flex items-center w-full justify-between max-w-sm border rounded-full focus-within:shadow pl-2'>
+                <input type='text' placeholder='search product here...' className='w-full outline-none' onChange={handleSearch} value={search}/>
+                <div className='text-lg min-w-[50px] h-8 bg-red-600 flex items-center justify-center rounded-r-full text-white'>
+                  <FaSearch />
                 </div>
-              )}
             </div>
-           
-            <button
-              onClick={handleSubmit}
-              className="h-8 px-3 bg-red-600 text-white rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600"
-            >
-              Search
-            </button>
-          </div>
-        </div>
 
         {/* User Icon, Cart, and Login/Logout */}
        {/* User Icon, Cart, and Login/Logout */}
