@@ -24,26 +24,35 @@ const ForgetPassword = () => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        const dataRequest = await fetch(SummaryApi.Forgot_Password.url, {
-            method: SummaryApi.Forgot_Password.method,
-            headers: {
-                "Content-Type": "application/json"
-            },
-            // Ensure cookies are sent with the request
-            body: JSON.stringify(data)
-        });
-
-        const dataResponse = await dataRequest.json();
-        if (dataResponse.success) {
-            toast.success(dataResponse.message);
-            navigate('/reset_password/:id/:token');
-            fetchUserDetails()
-        }
-        if (dataResponse.error) {
-            toast.error(dataResponse.message);
+        e.preventDefault(); // Prevent the default form submission behavior
+    
+        try {
+            const dataRequest = await fetch(SummaryApi.Forgot_Password.url, {
+                method: SummaryApi.Forgot_Password.method,
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                // Ensure the body contains the necessary data for the request
+                body: JSON.stringify(data)
+            });
+    
+            const dataResponse = await dataRequest.json(); // Parse the JSON response
+    
+            if (dataResponse.success) {
+                toast.success("Please check your email and click the link to change your password.");
+    
+                // Call a function to fetch user details if necessary
+                fetchUserDetails();
+            } else if (dataResponse.error) {
+                toast.error(dataResponse.message); // Display the error message from the response
+            }
+        } catch (error) {
+            // Catch any errors during the request and display an error notification
+            toast.error("An error occurred. Please try again later.");
+            console.error("Error during password reset request:", error);
         }
     };
+    
 
     return (
         <div id="Forgot_password" className="min-h-screen flex items-center justify-center bg-gradient-to-b from-red-200 to-gray-100">
