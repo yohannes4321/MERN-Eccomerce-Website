@@ -1,13 +1,14 @@
 import React ,{useState,useEffect} from 'react';
-import image1 from "../assest/banner/img1.webp"
-import image2 from "../assest/banner/img2.webp";
-import image3 from "../assest/banner/img3.jpg";
-import image4 from "../assest/banner/img4.jpg";
+import image1 from "../assest/banner/download (11).png";
+import image2 from "../assest/banner/download (24).png";
+import image3 from "../assest/banner/download (26).png";
+import image4 from "../assest/banner/download (28).png";
 
-import imageMobile1 from "../assest/banner/img1_mobile.jpg";
-import imageMobile2 from "../assest/banner/img2_mobile.webp"
-import imageMobile3 from "../assest/banner/img3_mobile.jpg"
-import imageMobile4 from "../assest/banner/img4_mobile.jpg"
+
+import image5 from "../assest/banner/download (11).png";
+import image6 from "../assest/banner/download (24).png";
+import image7 from "../assest/banner/download (26).png";
+import image8 from "../assest/banner/download (28).png";
 
 const BannerProduct = () => {
     const desktopImages = [
@@ -18,10 +19,10 @@ const BannerProduct = () => {
     ];
     
     const mobileImages = [
-      imageMobile1,
-      imageMobile2,
-      imageMobile3,
-      imageMobile4
+      image5,
+      image6,
+      image7,
+      image8
     ];
   
     const [currentImage, setCurrentImage] = useState(0);
