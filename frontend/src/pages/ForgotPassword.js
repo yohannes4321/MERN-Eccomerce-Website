@@ -6,7 +6,7 @@ import SummaryApi from '../common/index';
 import { toast } from 'react-toastify'; // To make pop-up notifications
 import Context from '../context/index'
 
-const Login = () => {
+const ForgetPassword = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [data, setData] = useState({
         email: "",
@@ -46,7 +46,7 @@ const Login = () => {
     };
 
     return (
-        <div id="login" className="min-h-screen flex items-center justify-center bg-gradient-to-b from-red-200 to-gray-100">
+        <div id="Forgot_password" className="min-h-screen flex items-center justify-center bg-gradient-to-b from-red-200 to-gray-100">
             <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
             <h2 className=' text-center font-serif text-4xl '>Forgot Password </h2>
 
@@ -88,4 +88,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default ForgetPassword;

@@ -1,43 +1,53 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import VerticalProductCard from '../componets/verticalProductCard';
+import React, { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import SummaryApi from '../common/index'
+import VerticalCard from '../componets/verticalProductCard'
 
 const SearchProduct = () => {
-  const location = useLocation();
-  const searchQuery = new URLSearchParams(location.search).get('q');
-  const area = new URLSearchParams(location.search).get('area');
-  const specialLocation = new URLSearchParams(location.search).get('specialLocation');
-  const superSpecialLocation = new URLSearchParams(location.search).get('superSpecialLocation');
+    const query = useLocation()
+    const [data,setData] = useState([])
+    const [loading,setLoading] = useState(false)
 
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+    console.log("query",query.search)
 
-  const fetchProduct = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(`/api/searchProduct?q=${searchQuery}&area=${area}&specialLocation=${specialLocation}&superSpecialLocation=${superSpecialLocation}`);
-      const dataResponse = await response.json();
-      setData(dataResponse.data);
-    } catch (error) {
-      console.error('Error fetching product data:', error);
-    } finally {
-      setLoading(false);
+    const fetchProduct = async()=>{
+        setLoading(true)
+        const response = await fetch(SummaryApi.searchProduct.url+query.search)
+        const dataResponse = await response.json()
+        setLoading(false)
+
+        setData(dataResponse.data)
     }
-  };
 
-  useEffect(() => {
-    fetchProduct();
-  }, [searchQuery, area, specialLocation, superSpecialLocation]);
+    useEffect(()=>{
+        fetchProduct()
+    },[query])
 
   return (
     <div className='container mx-auto p-4'>
-      {loading && <p>Loading...</p>}
-      {!loading && data.length === 0 && <p>No data found for your search.</p>}
-      {!loading && data.length > 0 && (
-        <VerticalProductCard data={data} heading={`Search results for "${searchQuery}"`} />
-      )}
-    </div>
-  );
-};
+      {
+        loading && (
+          <p className='text-lg text-center'>Loading ...</p>
+        )
+      }
+ 
+      <p className='text-lg font-semibold my-3'>Search Results : {data.length}</p>
 
-export default SearchProduct;
+      {
+        data.length === 0 && !loading && (
+           <p className='bg-white text-lg text-center p-4'>No Data Found....</p>
+        )
+      }
+
+
+      {
+        data.length !==0 && !loading && (
+          <VerticalCard loading={ loading} data={data}/>
+        )
+      }
+
+    </div>
+  )
+}
+
+export default SearchProduct

@@ -8,9 +8,8 @@ import { setUserDetails } from '../store/userSlice';
 import Context from '../context/index';
 import AddToCart from '../helper/AddtoCart';
 import LocationCategory from '../helper/LocationCategory';
-import VerticalProductCard from '../componets/verticalProductCard';
+
 function Header() {
-  const [data, setData] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user?.user);
@@ -18,16 +17,10 @@ function Header() {
   const [isSearchVisible, setSearchVisible] = useState(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const searchParams = new URLSearchParams(useLocation().search);
-   
-    
-    const [search, setSearch] = useState({
-      product: '',
-      selectedLocation: '',
-    });
-  
-    const [loading, setLoading] = useState(false);
-
- 
+  const searchInput = useLocation()
+  const URLSearch = new URLSearchParams(searchInput?.search)
+  const searchQuery = URLSearch.getAll("q")
+  const [search,setSearch] = useState(searchQuery)
   const context = useContext(Context);
 
   const toggleSearch = () => {
@@ -63,7 +56,17 @@ function Header() {
     }
   };
 
- 
+  const handleDropdownClick = () => {
+    setIsDropdownVisible(!isDropdownVisible);
+  };
+
+  const handleLocationSelect = (location) => {
+    setSearch({ ...search, selectedLocation: location });
+    setIsDropdownVisible(false); // Hide dropdown after selection
+  };
+  const handleSearch = (e)=>{
+    const { value } = e.target
+    setSearch(value)
   const handleSubmit = () => {
     const filteredSearchParams = {};
     
@@ -77,7 +80,7 @@ function Header() {
     const queryParams = new URLSearchParams(filteredSearchParams).toString();
     navigate(`/search?${queryParams}`);
   };
- 
+
   const handleAddToCart = async (e, productId) => {
     e.preventDefault();
     try {
@@ -95,23 +98,12 @@ function Header() {
         console.error("Error adding to cart:", error);
     }
 };
-const handleSearch = (e) => {
-  setSearch({ ...search, product: e.target.value });
-};
 
-const handleLocationSearch = (e) => {
-  setSearch({ ...search, selectedLocation: e.target.value });
-};
-
-const handleLocationSelect = (location) => {
-  setSearch({ ...search, selectedLocation: location });
-  setIsDropdownVisible(false); // Hide dropdown when a location is selected
-};
 
   useEffect(() => {
     context.fetchUserDetails();
-    // Initial load for cart count
-  }, [context,search.product, search.selectedLocation]);
+    context.fetchUserAddToCart(); // Initial load for cart count
+  }, [context]);
 
   return (
     <header className="h-16 shadow-md bg-white">
@@ -122,50 +114,57 @@ const handleLocationSelect = (location) => {
             ShopEasy
           </Link>
         </div>
-  {/* Search Bar */}
-  <div className='flex items-center gap-6'>
-        <input
-          type='text'
-          placeholder='Search for a product...'
-          value={search.product}
-          onChange={handleSearch}
-          className='h-8 px-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-600 md:w-64'
-        />
-        <div className='relative'>
-          <input
-            type='text'
-            value={search.selectedLocation}
-            placeholder='Search location...'
-            className='h-8 px-3 border border-gray-300 rounded w-full bg-white focus:outline-none focus:ring-2 focus:ring-red-600'
-            onChange={handleLocationSearch}
-            onFocus={() => setIsDropdownVisible(true)}
-          />
-          {isDropdownVisible && (
-            <div className='absolute z-10 w-full mt-2 bg-white border border-gray-300 rounded shadow-lg'>
-              {/* Display a dropdown for location suggestions */}
-              {LocationCategory.filter((loc) =>
-                loc.label.toLowerCase().includes(search.selectedLocation.toLowerCase())
-              ).map((loc) => (
-                <button
-                  key={loc.id}
-                  className='w-full text-left px-3 py-2 hover:bg-gray-100'
-                  onClick={() => handleLocationSelect(loc.label)}
-                >
-                  {loc.label}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
 
-      {/* Product Results */}
-      {loading && <p>Loading...</p>}
-      {!loading && data.length === 0 && <p>No data found for your search.</p>}
-      {!loading && data.length > 0 && (
-        <VerticalProductCard data={data} heading={`Search results for "${search.product}"`} />
-      )}
-    </div>
+        {/* Search Bar */}
+        <div className={`w-full max-w-3xl mx-auto ${isSearchVisible ? 'block' : 'hidden'} md:flex md:items-center md:justify-between`}>
+          <div className="flex flex-col md:flex-row md:space-x-4 p-4 bg-white rounded-lg shadow-lg border border-gray-300">
+            <input
+              type="text"
+              name="product"
+              placeholder="Search for a product..."
+              value={search.product}
+              onChange={handleSearch}
+              className="h-8 px-3 border border-gray-300 rounded flex-grow focus:outline-none focus:ring-2 focus:ring-red-600 md:w-64"
+            />
+            <div className="relative flex-grow">
+              <input
+                type="text"
+                value={search.selectedLocation}
+                placeholder="Search location..."
+                className="h-8 px-3 border border-gray-300 rounded w-full bg-white focus:outline-none focus:ring-2 focus:ring-red-600"
+                onChange={(e) => {
+                  setSearch({ ...search, selectedLocation: e.target.value });
+                  setIsDropdownVisible(true); // Show dropdown when user starts typing
+                }}
+                onFocus={() => setIsDropdownVisible(true)}
+                // Removed onBlur to prevent it from hiding the dropdown prematurely
+              />
+              {isDropdownVisible && (
+                <div className="absolute z-10 w-full mt-2 bg-white border border-gray-300 rounded shadow-lg">
+                  {LocationCategory.filter((loc) =>
+                    loc.label.toLowerCase().includes(search.selectedLocation.toLowerCase())
+                  ).map((loc) => (
+                    <button
+                      key={loc.id}
+                      className="w-full text-left px-3 py-2 hover:bg-gray-100"
+                      onClick={() => handleLocationSelect(loc.label)}
+                    >
+                      {loc.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+           
+            <button
+              onClick={handleSubmit}
+              className="h-8 px-3 bg-red-600 text-white rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600"
+            >
+              Search
+            </button>
+          </div>
+        </div>
+
         {/* User Icon, Cart, and Login/Logout */}
        {/* User Icon, Cart, and Login/Logout */}
 <div className="flex items-center gap-6">
@@ -226,9 +225,9 @@ const handleLocationSelect = (location) => {
     </Link>
   )}
 </div>
-      
+      </div>
     </header>
   );
 }
 
-export default Header;
+export default Header
